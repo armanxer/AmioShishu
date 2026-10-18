@@ -5,10 +5,10 @@
  * These settings are separate from content.js, so editor exports cannot overwrite them.
  */
 const HEADER_LINKS = {
-  linkedin: "",      // Example: "https://www.linkedin.com/in/your-name/"
-  github: "",        // Example: "https://github.com/your-username"
-  researchgate: "",  // Example: "https://www.researchgate.net/profile/Your-Name"
-  instagram: "",     // Example: "https://www.instagram.com/your-username/"
+  linkedin: "https://www.linkedin.com/in/kazi-anik-arman/",      // Example: "https://www.linkedin.com/in/your-name/"
+  github: "https://github.com/armanxer",        // Example: "https://github.com/your-username"
+  google_scholar: "https://scholar.google.com/citations?user=F6tEpFAAAAAJ&hl=en",  // Example: "https://www.researchgate.net/profile/Your-Name"
+  instagram: "https://www.instagram.com/arman_xer/",     // Example: "https://www.instagram.com/your-username/"
   cv: ""            // Example: "assets/Arman-CV.pdf" (upload this file first)
 };
 
