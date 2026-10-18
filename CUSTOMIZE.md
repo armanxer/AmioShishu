@@ -9,6 +9,7 @@ This is a small, dependency-free website. You can edit it with a normal text edi
 | `index.html` | Navigation, story, purpose, work, contact copy | Change your words or add a section |
 | `style.css` | Colors, spacing, type, mobile layout | Change the visual design |
 | `content.js` | Email, gallery, saved blog posts | Update content directly or replace with editor export |
+| `content-model.js` | Shared validation and migration of older backups | Change the content schema |
 | `app.js` | Gallery rendering, journal search, article dialog | Change public-site behavior |
 | `editor.html` | Editor form and instructions | Change editor labels or fields |
 | `editor.js` | Photo resizing, local saving, importing, exporting | Change the editing workflow |
@@ -16,7 +17,7 @@ This is a small, dependency-free website. You can edit it with a normal text edi
 | `.nojekyll` | Tells Pages to serve the static files directly | Leave it in place |
 | `LICENSE` | Existing repository license | Review it separately before changing licensing |
 
-The public page loads `content.js` before `app.js`. Both use `defer`, so the page's HTML is ready when JavaScript runs. Keep that order.
+The public page loads `content.js`, then `content-model.js`, then `app.js`. Both use `defer`, so the page's HTML is ready when JavaScript runs. Keep that order.
 
 ## 2. Easiest content workflow
 
@@ -87,7 +88,7 @@ For many images, separate assets can keep the content file easier to edit. Uploa
 
 Gallery images are cropped to 4:3 by `object-fit: cover`. Change `.gallery img` to `object-fit: contain` if preserving the full frame matters more than uniform cropping. To replace the bread illustration, change the hero `<img>` source and alt text in `index.html`.
 
-The editor currently validates exactly three gallery slots. If changing the slot count manually, also change `d.gallery.length!==3` in `editor.js`'s `validate` function. The public renderer and gallery form already iterate the array.
+The gallery has no fixed slot count. Use **+ Add photo slot**, select multiple files with **Add multiple photos**, or delete and reorder slots. The same controls support photos inside custom entries and extra photos in journal posts.
 
 ## 6. Blog dates and visibility
 
@@ -137,3 +138,50 @@ Official guide: https://docs.github.com/en/pages/getting-started-with-github-pag
 ## 9. Before publishing a change
 
 Open the site on desktop and phone. Follow navigation links, open and close an article, test search, and check photo captions. For editor changes, try one photo and one draft, export, and replace the local content file before updating GitHub. Keep a backup of working files. Avoid changing several unrelated behaviors at once; small commits are easier to undo.
+
+
+## 10. Expand your notebook: photos, posts, and sidebar sections
+
+There is no fixed application limit on the number of photos, journal posts, sections, or entries. Browser storage, available memory, and total page download size still matter. For a large collection, store images in `assets/` and use image paths instead of embedding all photos in content.js.
+
+### Photos
+- **+ Add photo slot** creates one editable slot; open its disclosure panel to fill it in.
+- **Add multiple photos** imports multiple selected files in sequence.
+- **Move up / Move down** reorder photos; **Delete photo slot** removes the whole slot.
+- An image URL/path field supports separate assets. Caption, alt text, and placeholder remain editable.
+- Posts have a cover plus **Additional post photos**. Save the post before switching or exporting.
+
+### Custom sidebar sections
+1. In the editor's **Sidebar sections**, click **+ Publications**, **+ Seminars**, **+ Art**, or **+ Custom section**. Presets only name an empty section; they do not create fictional content.
+2. Expand the section to rename its title/sidebar label, write an introduction, or toggle visibility.
+3. Click **+ Add entry**, then expand that entry. Add a title, optional date, description/citation, external URL and link label.
+4. Add as many entry photos as you need. A publication might have a citation and paper link; a seminar might have event details and photos; an art entry might contain a collection of images.
+5. Reorder sections, entries, and photos with Move up/down. Deleting a section deletes its entries after confirmation.
+6. Export content.js and replace it in GitHub as before.
+
+Custom sections appear after the journal and before contact. Desktop navigation is a left sidebar; on smaller screens it becomes a wrapped navigation block above the page. Built-in sections stay fixed. Each custom section's title automatically becomes its sidebar link. IDs remain stable when titles change.
+
+Section/gallery text changes save locally as you type. A journal post still requires **Save post locally**, including changes to its extra photos. Unsaved post form changes are not included in backups or exports.
+
+Older content files and JSON backups still load. The shared validator initializes missing `sections` and post `photos` arrays. Existing saved work is retained under the same browser-storage key.
+
+New section data shape:
+
+```js
+sections: [{
+  id: "section-my-publications", // Unique stable ID; letters, digits, hyphens, underscores.
+  title: "Publications",
+  description: "Research and writing.",
+  published: true,
+  entries: [{
+    title: "Paper title",
+    date: "2026-10-18",         // Or empty string.
+    body: "Citation and notes.",
+    url: "https://example.com/paper",
+    linkLabel: "Read paper",
+    photos: []                 // Same objects as gallery: image, caption, alt, placeholder.
+  }]
+}]
+```
+
+A hidden section is excluded from both public content and sidebar, but remains in the exported public source. Entry dates do not schedule publication. Links only render for HTTP/HTTPS URLs. Keep HTML IDs and script order intact if modifying the code.

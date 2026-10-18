@@ -6,7 +6,7 @@
  */
 'use strict';
 
-const content=window.AMIO_CONTENT;
+const content=AmioModel.validate(window.AMIO_CONTENT);
 
 const make=(tag,cls,text)=>{const e=document.createElement(tag);
 if(cls)e.className=cls;
@@ -19,7 +19,7 @@ const safeImage=s=>typeof s==='string'&&(/^(data:image\/(png|jpeg|webp);base64,)
 // Noon prevents a date-only value from shifting to the previous day in local time.
 const dateLabel=s=>/^\d{4}-\d{2}-\d{2}$/.test(s)?new Date(s+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'Undated';
 
-// Build the three gallery slots; missing images become labeled placeholders.
+// Build all gallery slots; missing images become labeled placeholders.
 content.gallery.forEach(g=>{const f=make('figure');
 if(safeImage(g.image)){const i=make('img');
 i.src=g.image;
@@ -40,6 +40,8 @@ const im=document.querySelector('#article-image');
 im.hidden=!safeImage(p.image);
 if(!im.hidden){im.src=p.image;
 im.alt=p.alt||p.title}else im.removeAttribute('src');
+document.querySelector('#article-photos')?.remove();
+const extra=photoGrid(p.photos);extra.id='article-photos';dialog.append(extra);
 dialog.showModal()}
 // Published entries only. Search title, summary, category, and body; newest date first.
 // Dates are display labels, not automatic publication schedules.
@@ -63,3 +65,36 @@ if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(content.email))document.querySelector('#ema
 document.querySelector('#year').textContent=new Date().getFullYear();
 renderPosts();
 
+
+// Render arbitrary photo arrays. Shared by custom entries and additional blog photos.
+function photoGrid(items) {
+  const grid=make('div','gallery');
+  (items||[]).forEach(p=>{
+    const figure=make('figure');
+    if(safeImage(p.image)){
+      const img=make('img');img.src=p.image;img.alt=p.alt||p.caption;img.loading='lazy';figure.append(img);
+    }else{
+      const slot=make('div','photo-slot');slot.append(make('b','',p.placeholder||'A moment to share'));figure.append(slot);
+    }
+    figure.append(make('figcaption','',p.caption));grid.append(figure);
+  });
+  return grid;
+}
+// Prefix section anchors to prevent collisions with fixed HTML IDs.
+const sidebar=document.querySelector('#section-nav');
+function sidebarLink(title,target){const a=make('a','',title);a.href='#'+target;sidebar.append(a);}
+[['My story','story'],['The purpose','purpose'],['My work','work'],['Photos','gallery'],['Journal','journal']].forEach(([t,id])=>sidebarLink(t,id));
+(content.sections||[]).filter(s=>s.published).forEach(s=>{
+  const section=make('section','section custom-section');section.id='custom-'+s.id;
+  sidebarLink(s.title,section.id);
+  section.append(make('h2','',s.title),make('p','section-description',s.description));
+  s.entries.forEach(entry=>{
+    const article=make('article','custom-entry');article.append(make('h3','',entry.title));
+    if(entry.date)article.append(make('p','post-meta',dateLabel(entry.date)));
+    article.append(make('p','entry-body',entry.body));
+    if(AmioModel.safeLink(entry.url)){const a=make('a','text-link',entry.linkLabel||'Read more');a.href=entry.url;a.target='_blank';a.rel='noopener noreferrer';article.append(a);}
+    if(entry.photos.length)article.append(photoGrid(entry.photos));section.append(article);
+  });
+  document.querySelector('#custom-sections').append(section);
+});
+sidebarLink('Say hello','connect');

@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="content.js" defer>
 </script>
+<script src="content-model.js" defer></script>
 <script src="editor.js" defer>
 </script>
 </head>
@@ -30,10 +31,17 @@
 <h2 style="font-size:32px">Contact & photos</h2>
 <label for="contact">Contact email</label>
 <input type="email" id="contact">
+<div class="actions"><button id="add-photo" type="button">+ Add photo slot</button><label>Add multiple photos<input id="bulk-photos" type="file" accept="image/png,image/jpeg,image/webp" multiple></label></div>
 <div id="photo-fields">
 </div>
 <button id="save-gallery" style="margin-top:20px">Save contact & photos locally</button>
 <small>Images are resized to a maximum of 1600 pixels and embedded in your export. Upload PNG, JPEG or WebP files, up to 15 MB each. Use photos you have permission to share.</small>
+</section>
+<section class="editor-panel">
+<h2 style="font-size:32px">Sidebar sections</h2>
+<p>Create sections for publications, seminars, art, or anything else. Each visible section gets a sidebar link.</p>
+<div class="actions"><button type="button" id="add-section">+ Custom section</button><button type="button" data-preset="Publications">+ Publications</button><button type="button" data-preset="Seminars">+ Seminars</button><button type="button" data-preset="Art">+ Art</button></div>
+<div id="section-fields"></div>
 </section>
 <section class="editor-panel">
 <h2 style="font-size:32px">Your journal</h2>
@@ -63,6 +71,7 @@
 <button type="button" id="remove-cover">Remove cover</button>
 <label for="cover-alt">Describe the cover for screen readers</label>
 <input id="cover-alt">
+<h3>Additional post photos</h3><div id="post-photo-fields"></div><button type="button" id="add-post-photo">+ Add post photo</button>
 <label for="published">Visibility</label>
 <select id="published">
 <option value="false">Draft — hidden from the public journal</option>

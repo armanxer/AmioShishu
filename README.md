@@ -22,7 +22,7 @@ Click **Export content.js** and replace the repository's existing content.js wit
 
 The date is an editable label, not a schedule: any post marked Published is visible after upload, even with a future date. Published posts sort newest first. Drafts are not displayed but remain readable in public source files. Do not put private drafts in a public repository.
 
-Photos are resized in your browser and embedded in content.js. There are three gallery slots plus an optional cover per article. Use JSON backup and restore to move your content between devices. Browser saves are local and may be cleared; exports and backups are your durable copies. If storage fills up, export before closing the tab.
+Photos are resized in your browser and embedded in content.js. Add any number of gallery slots, posts, and additional article photos. Custom sidebar sections support publications, seminars, art, and other topics, with any number of entries. Use JSON backup and restore to move your content between devices. Browser saves are local and may be cleared; exports and backups are your durable copies. If storage fills up, export before closing the tab.
 
 The editor is a local authoring tool, not an authenticated online CMS. A visitor cannot change the deployed website through it: only someone with repository write access can publish. Never paste a GitHub token into website code.
 
@@ -32,9 +32,10 @@ Save an open post before exporting or switching posts. Gallery text is included 
 - Bread-inspired introduction and personal essay adaptation
 - Purpose and educational inclusion
 - Research, Olympiad learning, and AmioShishu intentions
-- Three photo spaces
+- Expandable photo gallery with bulk uploads and reordering
 - Searchable journal with full article dialog
 - Email contact
+- Custom sidebar sections with dates, links, notes, and photo collections
 - Separate content editor with local saves and exports
 
 ## Checks

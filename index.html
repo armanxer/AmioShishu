@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="content.js" defer>
 </script>
+<script src="content-model.js" defer></script>
 <script src="app.js" defer>
 </script>
 </head>
@@ -26,6 +27,11 @@
 <a class="nav-cta" href="#connect">Say hello ↗</a>
 </nav>
 </header>
+<!-- Sidebar links follow your custom sections in content.js. -->
+<aside class="page-sidebar" aria-label="Page contents">
+<p class="eyebrow">MY NOTEBOOK</p>
+<nav id="section-nav" aria-label="Notebook sections"></nav>
+</aside>
 <main id="main">
 <!-- INTRO: edit your headline and introduction here; bread artwork is assets/bread.svg. -->
 <section class="hero">
@@ -143,6 +149,7 @@
 </div>
 </section>
 <!-- CONTACT: email address comes from content.js; other copy is edited here. -->
+<div id="custom-sections"></div>
 <section id="connect" class="connect section">
 <p class="eyebrow">LET’S MAKE SOMETHING MEANINGFUL</p>
 <h2>There’s room at the <em>table.</em>

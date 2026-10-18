@@ -142,3 +142,24 @@ dialog::backdrop { background: #29392b80; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* EXTENSIBLE NOTEBOOK — sidebar and custom content blocks. */
+.page-sidebar { position: fixed; top: 140px; left: 20px; width: 165px; max-height: calc(100vh - 165px); overflow-y: auto; padding: 12px; }
+.page-sidebar nav { display: flex; flex-direction: column; align-items: stretch; gap: 5px; }
+.page-sidebar nav a { display: block; padding: 5px 8px; overflow-wrap: anywhere; border-radius: 4px; }
+.page-sidebar nav a:hover { background: var(--pistachio); }
+.custom-section { border-top: 1px solid var(--line); }
+.section-description { margin-top: 14px; white-space: pre-wrap; }
+.custom-entry { padding: 24px 0; border-bottom: 1px solid var(--line); }
+.custom-entry .post-meta { margin: 8px 0; }
+.entry-body { margin-top: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.custom-entry .gallery, #article-photos { margin-top: 20px; }
+.item-editor { padding: 16px; margin: 16px 0; border: 1px solid var(--line); border-radius: 4px; }
+.item-editor summary { cursor: pointer; font-weight: 600; overflow-wrap: anywhere; }
+.editor .item-editor textarea { min-height: 110px; }
+@media (min-width: 1151px) { main, body > footer { margin-left: 180px; } }
+@media (max-width: 1150px) {
+  .page-sidebar { position: static; width: auto; max-height: none; margin: 20px 22px 0; padding: 10px; background: #f0f2e9; }
+  .page-sidebar nav { flex-direction: row; flex-wrap: wrap; justify-content: start; }
+  .page-sidebar .eyebrow { margin-bottom: 8px; }
+}
