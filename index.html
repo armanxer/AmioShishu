@@ -10,15 +10,24 @@
 <script src="content.js" defer>
 </script>
 <script src="content-model.js" defer></script>
+<script src="header-links.js" defer></script>
 <script src="app.js" defer>
 </script>
 </head>
 <body class="portfolio-page">
 <a class="skip" href="#main">Skip to content</a>
-<!-- Brand-only header. All section navigation is in the left sidebar. -->
+<!-- Brand and social shortcuts. Section navigation stays in the left sidebar. -->
 <header>
 <a class="brand" href="#">✳ AmioShishu<span>I AM ALSO A CHILD</span>
 </a>
+<!-- Edit URLs in header-links.js. Empty placeholders are disabled automatically. -->
+<div class="header-links" aria-label="Social links and CV">
+  <a data-header-link="linkedin" aria-disabled="true">LinkedIn</a>
+  <a data-header-link="github" aria-disabled="true">GitHub</a>
+  <a data-header-link="researchgate" aria-disabled="true">ResearchGate</a>
+  <a data-header-link="instagram" aria-disabled="true">Instagram</a>
+  <a data-header-link="cv" class="cv-link" aria-disabled="true">Download CV ↓</a>
+</div>
 </header>
 <div class="notebook-layout">
 <!-- Sidebar links follow your custom sections in content.js. -->

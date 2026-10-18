@@ -185,3 +185,11 @@ sections: [{
 ```
 
 A hidden section is excluded from both public content and sidebar, but remains in the exported public source. Entry dates do not schedule publication. Links only render for HTTP/HTTPS URLs. Keep HTML IDs and script order intact if modifying the code.
+
+
+## Header social links and CV
+Edit `header-links.js` and fill the empty strings in `HEADER_LINKS`. LinkedIn, GitHub, ResearchGate, and Instagram accept full HTTPS profile URLs. Blank values remain visible, disabled placeholders.
+
+For a direct CV download, upload a PDF such as `assets/Arman-CV.pdf` and set `cv: "assets/Arman-CV.pdf"`. Match capitalization exactly and avoid spaces in the filename. Externally hosted HTTPS PDFs open in a new tab; browser download behavior depends on the remote host.
+
+To add another social: add a key/value to `HEADER_LINKS`, then duplicate a `data-header-link` anchor inside `.header-links` in index.html, matching its key. To remove a shortcut, remove its anchor. These settings are independent of editor exports.
