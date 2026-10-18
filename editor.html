@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AmioShishu — Content studio</title>
+<link rel="stylesheet" href="style.css">
+<script src="content.js" defer>
+</script>
+<script src="editor.js" defer>
+</script>
+</head>
+<body>
+<main class="editor">
+<a href="index.html">← Back to the website</a>
+<p class="eyebrow" style="margin-top:35px">YOUR LITTLE CONTENT STUDIO</p>
+<h1>Make it <em>your own.</em>
+</h1>
+<p class="notice">Edits stay in this browser until you export them. To update your live website, replace <b>content.js</b> in your GitHub repository with the exported file. This editor has no access to your repository.</p>
+<div class="actions">
+<button id="export">Export content.js</button>
+<button id="backup">Download JSON backup</button>
+<label>Restore JSON backup<input type="file" id="import" accept="application/json,.json">
+</label>
+</div>
+<p id="status" role="status" aria-live="polite">
+</p>
+<section class="editor-panel">
+<h2 style="font-size:32px">Contact & photos</h2>
+<label for="contact">Contact email</label>
+<input type="email" id="contact">
+<div id="photo-fields">
+</div>
+<button id="save-gallery" style="margin-top:20px">Save contact & photos locally</button>
+<small>Images are resized to a maximum of 1600 pixels and embedded in your export. Upload PNG, JPEG or WebP files, up to 15 MB each. Use photos you have permission to share.</small>
+</section>
+<section class="editor-panel">
+<h2 style="font-size:32px">Your journal</h2>
+<div id="editor-posts" class="editor-list">
+</div>
+<button id="new-post">+ New post</button>
+<small>The starter post is an editable draft, not a published entry.</small>
+</section>
+<form id="post-form">
+<h2 style="font-size:32px" id="form-title">Write a post</h2>
+<label for="title">Title</label>
+<input id="title" required maxlength="180">
+<label for="date">Displayed publication date</label>
+<input id="date" type="date" required>
+<small>This is a display date, not a scheduled publishing system.</small>
+<label for="category">Category</label>
+<input id="category" required value="Personal notes" maxlength="80">
+<label for="excerpt">Short introduction</label>
+<textarea id="excerpt" style="min-height:80px" required maxlength="400">
+</textarea>
+<label for="body">Post text</label>
+<textarea id="body" required>
+</textarea>
+<label for="cover">Cover photo (optional)</label>
+<input type="file" id="cover" accept="image/png,image/jpeg,image/webp">
+<img id="cover-preview" class="editor-preview" alt="Cover preview" hidden>
+<button type="button" id="remove-cover">Remove cover</button>
+<label for="cover-alt">Describe the cover for screen readers</label>
+<input id="cover-alt">
+<label for="published">Visibility</label>
+<select id="published">
+<option value="false">Draft — hidden from the public journal</option>
+<option value="true">Published — show after export and upload</option>
+</select>
+<div class="actions">
+<button type="submit">Save post locally</button>
+<button type="button" id="delete-post">Delete this post</button>
+</div>
+</form>
+<p class="notice">Drafts are hidden visually, but anything you upload to a public repository can be read in its source files. Keep private writing outside this website.</p>
+</main>
+</body>
+</html>
+
