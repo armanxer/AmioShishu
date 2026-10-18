@@ -1,195 +1,132 @@
-# Make AmioShishu your own
+# Customizing AmioShishu
 
-This is a small, dependency-free website. You can edit it with a normal text editor or GitHub's file editor. There is no build command, package installation, database, or paid service required by the code.
+The website now uses separate pages. GitHub Actions runs `node build-site.cjs` and publishes only the generated `dist/` folder. You do not need to run a build manually when editing on GitHub: committing your changes triggers it.
 
-## 1. Where everything lives
+## Page order and URLs
 
-| File | What it controls | When to edit it |
-| --- | --- | --- |
-| `index.html` | Navigation, story, purpose, work, contact copy | Change your words or add a section |
-| `style.css` | Colors, spacing, type, mobile layout | Change the visual design |
-| `content.js` | Email, gallery, saved blog posts | Update content directly or replace with editor export |
-| `content-model.js` | Shared validation and migration of older backups | Change the content schema |
-| `app.js` | Gallery rendering, journal search, article dialog | Change public-site behavior |
-| `editor.html` | Editor form and instructions | Change editor labels or fields |
-| `editor.js` | Photo resizing, local saving, importing, exporting | Change the editing workflow |
-| `assets/bread.svg` | Original pistachio bread illustration | Replace or edit the illustration |
-| `.nojekyll` | Tells Pages to serve the static files directly | Leave it in place |
-| `LICENSE` | Existing repository license | Review it separately before changing licensing |
+| Sidebar label | Path after your GitHub Pages project URL |
+| --- | --- |
+| Home | `/` |
+| Purpose & Service | `/purpose/` |
+| Projects | `/projects/` |
+| Publications | `/publications/` |
+| Seminars | `/seminars/` |
+| My Story | `/my-story/` |
+| My Sourdough Recipes | `/sourdough-recipes/` |
+| Art | `/art/` |
+| Journal | `/journal/` |
+| Photos | `/photos/` |
+| Contact | `/contact/` |
 
-The public page loads `content.js`, then `content-model.js`, then `app.js`. Both use `defer`, so the page's HTML is ready when JavaScript runs. Keep that order.
+The order puts your purpose, projects, research, and engagement near the top, followed by personal interests and writing. This is a presentation choice, not a universal admissions rule. Change the `pages` array in `build-site.cjs` to reorder it.
 
-## 2. Easiest content workflow
+These are actual `folder/index.html` documents. Links open different pages, and direct links, refresh, browser history, and opening in a new tab work without a special server. On a GitHub project site, the project prefix remains in the address: `/AmioShishu/projects/`, for example.
 
-1. Open `editor.html` in your browser. You can open it from the extracted folder or the deployed website.
-2. Add photos, captions, descriptions, and your email.
-3. Create or select a journal post. Enter a title, date, category, summary, and body.
-4. Choose Draft or Published. Click **Save post locally** before switching posts or exporting.
-5. Click **Export content.js**.
-6. Replace the repository's `content.js` with the downloaded file and commit the change.
-7. Wait for GitHub Pages to deploy. Refresh the public website.
+## File map
 
-The public page reads the deployed `content.js`, not your editor's local browser storage. Saving locally alone will not update it. Even the Back to website link shows the last file version, not unsaved editor changes.
+| File | Purpose |
+| --- | --- |
+| `_pages/template.html` | Shared header, sidebar container, footer, scripts, and document structure |
+| `_pages/home.html` | Home introduction, bread image, and compact identity caption |
+| `_pages/purpose.html` | Purpose and service text |
+| `_pages/my-story.html` | Essay adaptation |
+| `_pages/photos.html` | Photo-page heading and gallery container |
+| `_pages/journal.html` | Journal heading and search interface |
+| `_pages/contact.html` | Contact-page text |
+| `content.js` | Email, photos, posts, projects, recipes, and other collections |
+| `header-links.js` | Your social links and CV path |
+| `style.css` | Pistachio theme, layout, typography, responsive rules |
+| `content-model.js` | Shared data validation and older-backup migration |
+| `app.js` | Render the current page's content and navigation |
+| `editor.html`, `editor.js` | Browser-based content editor |
+| `build-site.cjs` | Generates pages, readable routes, and sidebar metadata |
+| `assets/` | Illustration, uploaded photos, and CV PDF |
+| `.github/workflows/static.yml` | Builds and deploys the website |
 
-Use **Download JSON backup** regularly. Restore backups with the JSON file input. A backup contains saved content; save your open post first. Local browser storage does not sync between devices, different browsers, local files, and the hosted URL. Clearing browser data can remove it.
+`dist/` is generated output. Do not edit its files as your source; rebuilding replaces them. The former long root index.html is no longer the source. Edit the corresponding `_pages/` fragment instead.
 
-## 3. Edit text and navigation
+## Edit content without touching layout code
 
-In `index.html`, look for comments such as `STORY`, `PURPOSE`, and `WORK`. Replace the words between tags:
+1. Open `editor.html` at the root of your hosted website.
+2. Add photos, posts, or entries in Projects, Publications, Seminars, My Sourdough Recipes, and Art.
+3. Save an open journal post before switching to another post or exporting. Collection fields save locally as you type.
+4. Export `content.js`.
+5. Replace the repository's `content.js` and commit it.
+6. GitHub Actions generates the separate pages and deploys them.
 
-```html
-<p>Write your new paragraph here.</p>
+Local editor storage is not the live site. Use JSON backups to keep copies of saved work and move between devices. The editor cannot write directly to GitHub. Large embedded photo collections may exceed browser storage; export before closing the tab if storage is full.
+
+## Projects and recipes
+
+Both are ordinary editable collections. Expand the collection in the editor and click **Add entry**. Every entry supports a title, optional date, multiline text, an external link, and as many photos as you need.
+
+For a project, use the text for its question, your role, method, result, and what you learned. Add a repository or paper link if available. For a recipe, use headings in plain text and line breaks, for example:
+
+```text
+Ingredients
+List your actual quantities here.
+
+Method
+1. Your first step.
+2. Your next step.
+
+Notes
+What you changed and what you would try next.
 ```
 
-Keep tags and class names intact. For a visible ampersand in HTML, write `&amp;`. Use `<strong>important words</strong>` for emphasis. In the blog editor, write plain text; HTML and Markdown formatting are not interpreted.
+No recipes or project results have been invented for you. Empty collections show a simple placeholder until you add entries. The old My Work section and its broad category cards have been removed.
 
-Navigation links match section IDs:
+## Add more pages
 
-```html
-<a href="#resources">Resources</a>
-<section id="resources" class="section">
-  <p class="eyebrow">LEARNING TOGETHER</p>
-  <h2>Resources to share</h2>
-  <p>Add your description here.</p>
-</section>
+Use **Custom section** in the editor. After exporting and committing, the build creates a page for every visible collection and adds it to the sidebar. There is no fixed count limit.
+
+Built-in page paths stay fixed. Custom page paths are derived from their titles: “Community Teaching” becomes `/community-teaching/`. Duplicate paths receive `-2`, `-3`, and so on. To pin a custom path while changing its title, add an optional `slug` string to that section in content.js, such as `"slug": "community-teaching"`. Stick to letters, digits, and hyphens.
+
+Renaming a custom collection without a pinned slug changes its URL. Hidden collections have no public page or sidebar link after rebuilding. Their data still exists in the public content file; hiding content is not privacy protection. Deleted or hidden pages may return 404, so update any links you shared.
+
+## Journal and publication dates
+
+A Published post gets its own readable address under `/journal/`, based on its title. For example, “A little flour” becomes `/journal/a-little-flour/`. Search filters the journal listing; selecting a result navigates to that post's page. You can pin the URL with an optional `slug` on the post in content.js.
+
+Dates use `YYYY-MM-DD`. They are editable display dates, not scheduling rules. A Published post with a future date appears after deployment. Draft posts have no generated page, but remain readable in the public source file. Keep private writing outside this repository.
+
+## Photos and assets
+
+Add one slot or upload several photos together. Reorder and delete slots as needed. Journal posts have a cover plus additional photos; collection entries have photo lists. Use captions for visible descriptions and alt text for screen readers.
+
+Uploads accept PNG, JPEG, or WebP up to 15 MB each. They are resized to a maximum dimension of 1600px and embedded as WebP in exported content.js. For larger collections, upload images into `assets/` and enter paths such as `assets/seminar-01.jpg` instead. Asset filenames are case-sensitive. Avoid spaces in filenames.
+
+Always enter paths relative to the site root, like `assets/photo.jpg`. The page code adds the correct prefix on nested pages. Do not add `/AmioShishu/` or `../` manually to content image fields.
+
+## Social links and CV
+
+Edit `HEADER_LINKS` in header-links.js. Blank values remain disabled placeholders. Social profiles use full HTTPS URLs. Upload a PDF such as `assets/Arman-CV.pdf`, then set the CV value to that relative path. The script resolves it correctly from every subpage. Externally hosted PDFs open in a new tab; use a local asset for the direct download behavior.
+
+To add or remove a social label, edit `.header-links` in `_pages/template.html` and match the `data-header-link` key to HEADER_LINKS. Content editor exports do not change these settings.
+
+## Colors, fonts, and alignment
+
+The `:root` variables in style.css control cream, ink, green, pistachio, muted text, and divider colors. The `.notebook-layout` rules control the shared sidebar/content grid. Page-specific fragments inherit that grid. The `.page-heading` and `.page-collection` rules control subpage headings.
+
+The header stays consistent across pages; the sidebar marks the active page. On smaller screens it wraps into a compact navigation block. The system font keeps the notebook style. Test mobile widths after editing layout or typography.
+
+## Local preview and troubleshooting
+
+With Node installed, run:
+
+```sh
+node build-site.cjs
+python3 -m http.server 8000 --directory dist
 ```
 
-Add the link inside `<nav>` and the section inside `<main>`. IDs must be unique. Avoid renaming IDs referenced in `app.js`, including `gallery`, `posts`, `search`, and `post-dialog`.
+Open `http://localhost:8000/` in your browser. A local server is recommended because clean directory URLs are designed for HTTP hosting.
 
-To add a work item, copy one entire `<article>...</article>` inside `.work-grid`. Update its number, heading, paragraph, and tag. Keep plans phrased as plans until they have happened.
+- **Changes are missing:** check that the GitHub Actions deployment finished successfully, then refresh.
+- **Build fails:** check Actions logs and the JSON syntax in content.js; keep the `window.AMIO_CONTENT = {...};` assignment.
+- **A photo breaks only on subpages:** use `assets/name.jpg` in content.js and check capitalization.
+- **A page is missing:** ensure the collection is marked visible, then export, commit, and wait for the build.
+- **Journal looks empty:** mark a saved post Published before exporting.
+- **Old backups:** the content model migrates older data and adds the new Projects and Recipes collections once.
+- **Need to change static copy:** edit its `_pages/` fragment, not generated output.
 
-## 4. Change colors, width, or type
-
-At the top of `style.css`, the `:root` block is your control panel:
-
-```css
-:root {
-  --cream: #faf9f5;      /* Page background */
-  --ink: #32392e;        /* Main text */
-  --green: #526747;      /* Emphasis and links */
-  --pistachio: #e8edda;  /* Callouts and illustration background */
-  --muted: #74796e;      /* Supporting text */
-  --line: #e3e5dc;       /* Dividers and borders */
-  --page-width: 960px;   /* Maximum document width */
-}
-```
-
-The design uses your device's system font, like a clean document editor. The small handwritten bread caption uses Georgia. Change `body`'s `font` declaration to change normal text. Change the `h1`, `h2`, and `h3` rules for headings. Adjust `.section` padding for vertical spacing. A smaller `--page-width` gives a narrower notebook feel.
-
-CSS rules at the bottom inside `@media` apply to smaller screens. Test at approximately 375px and 768px widths after changing widths or grids. Keep text comfortably readable against the background.
-
-## 5. Photos
-
-The editor accepts JPEG, PNG, and WebP, up to 15 MB per source image. It resizes to a maximum dimension of 1600px and exports WebP at quality 0.82. The image is embedded in `content.js`, so there is no separate upload step for the image.
-
-For many images, separate assets can keep the content file easier to edit. Upload `assets/my-photo.jpg`, then set the relevant `image` field in `content.js` to `assets/my-photo.jpg`. Use relative paths without a starting slash so the website works under the GitHub project subdirectory.
-
-`caption` is visible below a gallery image. `alt` describes its meaningful content for screen readers. `placeholder` appears when no photo is set. A blog cover has its own `image` and `alt` fields. Empty `image` means no cover.
-
-Gallery images are cropped to 4:3 by `object-fit: cover`. Change `.gallery img` to `object-fit: contain` if preserving the full frame matters more than uniform cropping. To replace the bread illustration, change the hero `<img>` source and alt text in `index.html`.
-
-The gallery has no fixed slot count. Use **+ Add photo slot**, select multiple files with **Add multiple photos**, or delete and reorder slots. The same controls support photos inside custom entries and extra photos in journal posts.
-
-## 6. Blog dates and visibility
-
-A complete example post object:
-
-```js
-{
-  id: "a-new-beginning",        // Unique and stable; do not reuse another post's ID.
-  title: "A new beginning",
-  date: "2026-10-18",           // YYYY-MM-DD, not a localized date string.
-  category: "Learning",
-  excerpt: "A short introduction.",
-  body: "First paragraph.\n\nSecond paragraph.",
-  image: "",                   // Optional image path or exported image data.
-  alt: "",
-  published: false             // Change to true when ready to display.
-}
-```
-
-Dates are customizable display labels. They are not scheduled jobs: a Published post with a future date appears as soon as its content file is deployed. Published posts sort newest date first. Dates are formatted in English in `dateLabel()` in `app.js`; change its `en-GB` locale if desired.
-
-Drafts are hidden from the journal but are present in public source files after upload. Keep confidential writing outside the repository. The included first post is a draft, so an empty journal initially is expected.
-
-## 7. How the JavaScript works
-
-`app.js` reads `window.AMIO_CONTENT`, builds the gallery, and renders published posts. Search filters the title, summary, category, and full body. Selecting a post opens a native HTML dialog. Escape or the close button dismisses it. Text uses `textContent` so writing is displayed as text rather than executed as HTML.
-
-`editor.js` keeps an editable copy called `data`. `persist()` saves it to localStorage. `imageData()` resizes photos. `loadPost()` fills the form; submitting the form saves it back to `data`. `download()` exports a file. `validate()` checks backup structure before import.
-
-This is a local content tool, not a login-protected CMS. Public visitors can open the editor, but their edits remain in their own browser. They cannot modify your repository or live site through it. Never add GitHub tokens, passwords, or API secrets to these files.
-
-## 8. GitHub Pages and troubleshooting
-
-In repository Settings → Pages, use **Deploy from a branch**, select **main** and **/(root)**, then save. The repository root must contain `index.html`. GitHub's Pages settings will display the live URL after deployment.
-
-Official guide: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
-
-- **Changes do not appear:** check that you committed the exported file, that Pages finished deploying, and then refresh or hard-refresh the page.
-- **Journal is empty:** mark a post Published, save it, export, and replace `content.js`.
-- **Saved text disappeared:** ensure you saved the post before selecting another. Import your most recent JSON backup if needed.
-- **Browser storage full:** export before closing the tab. Reduce image count or size; use separate asset files for a large collection.
-- **Broken images:** check filename capitalization and relative paths. GitHub filenames are case-sensitive.
-- **Blank dynamic sections:** inspect the browser console for a JavaScript syntax error, often a missing comma or quote in manually edited `content.js`.
-- **Local preview differs from editor:** the preview reads the local `content.js` file. Replace it with your export and refresh.
-- **404 after deployment:** confirm the publishing branch/folder and that index.html is at its root.
-
-## 9. Before publishing a change
-
-Open the site on desktop and phone. Follow navigation links, open and close an article, test search, and check photo captions. For editor changes, try one photo and one draft, export, and replace the local content file before updating GitHub. Keep a backup of working files. Avoid changing several unrelated behaviors at once; small commits are easier to undo.
-
-
-## 10. Expand your notebook: photos, posts, and sidebar sections
-
-There is no fixed application limit on the number of photos, journal posts, sections, or entries. Browser storage, available memory, and total page download size still matter. For a large collection, store images in `assets/` and use image paths instead of embedding all photos in content.js.
-
-### Photos
-- **+ Add photo slot** creates one editable slot; open its disclosure panel to fill it in.
-- **Add multiple photos** imports multiple selected files in sequence.
-- **Move up / Move down** reorder photos; **Delete photo slot** removes the whole slot.
-- An image URL/path field supports separate assets. Caption, alt text, and placeholder remain editable.
-- Posts have a cover plus **Additional post photos**. Save the post before switching or exporting.
-
-### Custom sidebar sections
-1. In the editor's **Sidebar sections**, click **+ Publications**, **+ Seminars**, **+ Art**, or **+ Custom section**. Presets only name an empty section; they do not create fictional content.
-2. Expand the section to rename its title/sidebar label, write an introduction, or toggle visibility.
-3. Click **+ Add entry**, then expand that entry. Add a title, optional date, description/citation, external URL and link label.
-4. Add as many entry photos as you need. A publication might have a citation and paper link; a seminar might have event details and photos; an art entry might contain a collection of images.
-5. Reorder sections, entries, and photos with Move up/down. Deleting a section deletes its entries after confirmation.
-6. Export content.js and replace it in GitHub as before.
-
-Custom sections appear after the journal and before contact. Desktop navigation is a left sidebar; on smaller screens it becomes a wrapped navigation block above the page. Built-in sections stay fixed. Each custom section's title automatically becomes its sidebar link. IDs remain stable when titles change.
-
-Section/gallery text changes save locally as you type. A journal post still requires **Save post locally**, including changes to its extra photos. Unsaved post form changes are not included in backups or exports.
-
-Older content files and JSON backups still load. The shared validator initializes missing `sections` and post `photos` arrays. Existing saved work is retained under the same browser-storage key.
-
-New section data shape:
-
-```js
-sections: [{
-  id: "section-my-publications", // Unique stable ID; letters, digits, hyphens, underscores.
-  title: "Publications",
-  description: "Research and writing.",
-  published: true,
-  entries: [{
-    title: "Paper title",
-    date: "2026-10-18",         // Or empty string.
-    body: "Citation and notes.",
-    url: "https://example.com/paper",
-    linkLabel: "Read paper",
-    photos: []                 // Same objects as gallery: image, caption, alt, placeholder.
-  }]
-}]
-```
-
-A hidden section is excluded from both public content and sidebar, but remains in the exported public source. Entry dates do not schedule publication. Links only render for HTTP/HTTPS URLs. Keep HTML IDs and script order intact if modifying the code.
-
-
-## Header social links and CV
-Edit `header-links.js` and fill the empty strings in `HEADER_LINKS`. LinkedIn, GitHub, ResearchGate, and Instagram accept full HTTPS profile URLs. Blank values remain visible, disabled placeholders.
-
-For a direct CV download, upload a PDF such as `assets/Arman-CV.pdf` and set `cv: "assets/Arman-CV.pdf"`. Match capitalization exactly and avoid spaces in the filename. Externally hosted HTTPS PDFs open in a new tab; browser download behavior depends on the remote host.
-
-To add another social: add a key/value to `HEADER_LINKS`, then duplicate a `data-header-link` anchor inside `.header-links` in index.html, matching its key. To remove a shortcut, remove its anchor. These settings are independent of editor exports.
+Code and generated links are checked during development. A visual browser review is still useful after your own changes, especially at phone widths.

@@ -1,4 +1,4 @@
-/* Editable site content. Use editor.html; see CUSTOMIZE.md. */
+/* Editable content. Export from editor.html; deployment generates separate pages. */
 window.AMIO_CONTENT = {
   "email": "contact.anikarman@gmail.com",
   "gallery": [
@@ -56,7 +56,21 @@ window.AMIO_CONTENT = {
       "description": "A space for creative experiments, sketches, and things made with care.",
       "published": true,
       "entries": []
+    },
+    {
+      "id": "projects",
+      "title": "Projects",
+      "description": "Experiments, tools, and ideas developed through learning and research.",
+      "published": true,
+      "entries": []
+    },
+    {
+      "id": "sourdough-recipes",
+      "title": "My Sourdough Recipes",
+      "description": "Recipes, kitchen notes, and experiments with flour, patience, and pistachios.",
+      "published": true,
+      "entries": []
     }
   ],
-  "schemaVersion": 2
+  "schemaVersion": 3
 };

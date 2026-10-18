@@ -269,3 +269,15 @@ img { max-width: 100%; }
 @media (max-width: 480px) {
   .header-links { width: 100%; justify-content: flex-start; margin-left: 0; }
 }
+
+/* Separate-page headings share a consistent reading width. */
+.notebook-layout { min-height: calc(100vh - 200px); }
+.page-heading { padding: 4px 0 24px; border-bottom: 1px solid var(--line); }
+.page-heading h1, .page-collection h1 { font-size: clamp(30px, 4vw, 42px); }
+.notebook-layout .page-collection { padding-top: 4px; }
+.page-intro { margin: 20px 0 32px; color: var(--muted); max-width: 660px; }
+.page-collection .section-empty h2 { font-size: 18px; }
+.page-collection .custom-entry h2 { font-size: 23px; }
+.page-collection > .post-meta { margin: 26px 0 14px; }
+.post-cover { width: 100%; max-height: 450px; object-fit: cover; margin: 25px 0; border-radius: 6px; }
+a.post:hover { text-decoration: none; }

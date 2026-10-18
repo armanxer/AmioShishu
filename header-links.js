@@ -27,7 +27,7 @@ document.querySelectorAll("[data-header-link]").forEach(link => {
     return;
   }
 
-  link.href = value;
+  link.href = key === 'cv' && localPDF ? (window.AMIO_PAGE?.root || './') + value : value;
   link.removeAttribute("aria-disabled");
   link.title = key === "cv" ? "Download CV" : "Open " + link.textContent;
   if (key === "cv" && localPDF) {

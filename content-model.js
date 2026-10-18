@@ -31,6 +31,13 @@
       d.schemaVersion=2;
     }
     if(!Array.isArray(d.sections))throw Error('Invalid sections.');
+    if((d.schemaVersion||0)<3){
+      for(const s of [
+        {id:'projects',title:'Projects',description:'Experiments, tools, and ideas developed through learning and research.',published:true,entries:[]},
+        {id:'sourdough-recipes',title:'My Sourdough Recipes',description:'Recipes, kitchen notes, and experiments with flour, patience, and pistachios.',published:true,entries:[]}
+      ])if(!d.sections.some(existing=>existing.id===s.id))d.sections.push(s);
+      d.schemaVersion=3;
+    }
     const sectionIds=new Set();
     d.sections.forEach(s=>{
       strings(s,['id','title','description']);
