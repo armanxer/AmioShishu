@@ -8,6 +8,12 @@
   const safeLink=s=>{try{return ['https:','http:'].includes(new URL(s).protocol);}catch{return false;}};
   function strings(o,keys){if(!o||keys.some(k=>typeof o[k]!=='string'))throw Error('Invalid text field in backup.');}
   function photos(list){if(!Array.isArray(list))throw Error('Invalid photos.');list.forEach(p=>strings(p,['image','caption','alt','placeholder']));}
+  // One-time migration: install real starter sections without reviving deleted ones later.
+  const defaultSections=()=>[
+    {id:'publications',title:'Publications',description:'Research papers, collaborations, and questions I am exploring.',published:true,entries:[]},
+    {id:'seminars',title:'Seminars',description:'Talks, workshops, and conversations that make learning a shared experience.',published:true,entries:[]},
+    {id:'art',title:'Art',description:'A space for creative experiments, sketches, and things made with care.',published:true,entries:[]}
+  ];
   function validate(d){
     strings(d,['email']);photos(d.gallery);
     if(!Array.isArray(d.posts))throw Error('Invalid posts.');
@@ -18,6 +24,12 @@
       ids.add(p.id);p.photos??=[];photos(p.photos);
     });
     d.sections??=[];
+    if(!d.schemaVersion){
+      for(const section of defaultSections()) {
+        if(!d.sections.some(s=>s.id===section.id||s.title.toLowerCase()===section.title.toLowerCase()))d.sections.push(section);
+      }
+      d.schemaVersion=2;
+    }
     if(!Array.isArray(d.sections))throw Error('Invalid sections.');
     const sectionIds=new Set();
     d.sections.forEach(s=>{

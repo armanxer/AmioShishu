@@ -6,6 +6,7 @@
 'use strict';
 
 // Keep this key stable to retain saved work across visits in the same browser.
+let postDirty=false;
 const key='amioshishu-content-v1';
 let data=structuredClone(window.AMIO_CONTENT),editing=null,cover='',postPhotos=[];
 const $=id=>document.getElementById(id);
@@ -44,7 +45,10 @@ b.textContent=(p.published?'Published: ':'Draft: ')+p.title;
 b.onclick=()=>loadPost(p);
 $('editor-posts').append(b)})}
 // Populate the form. A null post creates a fresh, unsaved draft.
-function loadPost(p){editing=p?.id||null;
+function loadPost(p){
+if(postDirty&&!confirm('Discard unsaved changes to this post?'))return;
+postDirty=false;
+editing=p?.id||null;
 for(const k of ['title','date','category','excerpt','body'])$(k).value=p?.[k]||(k==='date'?[new Date().getFullYear(),String(new Date().getMonth()+1).padStart(2,'0'),String(new Date().getDate()).padStart(2,'0')].join('-'):k==='category'?'Personal notes':'');
 $('published').value=String(p?.published||false);
 postPhotos=structuredClone(p?.photos||[]);
@@ -59,16 +63,18 @@ function showCover(){$('cover-preview').hidden=!cover;
 if(cover)$('cover-preview').src=cover;
 else $('cover-preview').removeAttribute('src')}
 $('cover').onchange=async()=>{try{if(!$('cover').files[0])return;
-cover=await imageData($('cover').files[0]);
+cover=await imageData($('cover').files[0]);postDirty=true;
 showCover()}catch(e){status(e.message)}};
-$('remove-cover').onclick=()=>{cover='';
+$('remove-cover').onclick=()=>{postDirty=true;cover='';
 $('cover').value='';
 showCover()};
 $('new-post').onclick=()=>{loadPost(null);
 $('post-form').scrollIntoView()};
 
 // Commit the open form to the content object. Export only includes saved posts.
+$('post-form').addEventListener('input',()=>{postDirty=true;});
 $('post-form').onsubmit=e=>{e.preventDefault();
+postDirty=false;
 const p={photos:structuredClone(postPhotos),id:editing||'post-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),image:cover,alt:$('cover-alt').value,published:$('published').value==='true'};
 for(const k of ['title','date','category','excerpt','body'])p[k]=$(k).value.trim();
 const i=data.posts.findIndex(x=>x.id===editing);
@@ -97,7 +103,7 @@ a.download=name;
 a.click();
 setTimeout(()=>URL.revokeObjectURL(url),1000)}
 // Export a script, not raw JSON: index.html expects window.AMIO_CONTENT.
-$('export').onclick=()=>{if(!saveContact())return;
+$('export').onclick=()=>{if(postDirty){status('Save your open post before exporting.');$('post-form').scrollIntoView();return;}if(!saveContact())return;
 persist();
 download('content.js','window.AMIO_CONTENT = '+JSON.stringify(data,null,2)+';\n','text/javascript');
 status('Exported saved content. Replace content.js in GitHub to publish it. Save the current post first if you have unsaved edits.')};
@@ -145,23 +151,24 @@ function move(list,index,offset,redraw) {
   persist();redraw();
 }
 function drawPhotoList(root,list) {
+  const mark=()=>{if(list===postPhotos)postDirty=true;};
   root.replaceChildren();
   list.forEach((photo,index)=>{
     const box=document.createElement('details');box.className='item-editor';
-    const label=document.createElement('summary'); label.textContent='Photo '+(index+1)+(photo.caption?' · '+photo.caption:'');box.append(label);
-    field(box,'Caption',photo.caption,v=>photo.caption=v);
-    field(box,'Image description',photo.alt,v=>photo.alt=v);
-    field(box,'Placeholder title',photo.placeholder,v=>photo.placeholder=v);
-    field(box,'Image URL or assets/ path (optional)',photo.image,v=>photo.image=v);
+    const label=document.createElement('summary'); label.textContent='Photo '+(index+1)+(photo.caption?' · '+photo.caption:'');box.append(label);box.open=!photo.image;
+    field(box,'Caption',photo.caption,v=>{photo.caption=v;mark();});
+    field(box,'Image description',photo.alt,v=>{photo.alt=v;mark();});
+    field(box,'Placeholder title',photo.placeholder,v=>{photo.placeholder=v;mark();});
+    field(box,'Image URL or assets/ path (optional)',photo.image,v=>{photo.image=v;mark();});
     const uploadLabel=document.createElement('label'); uploadLabel.textContent='Upload image';
     const upload=document.createElement('input'); upload.type='file';upload.accept='image/png,image/jpeg,image/webp';
-    upload.onchange=async()=>{try{if(!upload.files[0])return;photo.image=await imageData(upload.files[0]);persist();drawPhotoList(root,list);}catch(e){status(e.message)}};
+    upload.onchange=async()=>{try{if(!upload.files[0])return;photo.image=await imageData(upload.files[0]);mark();persist();drawPhotoList(root,list);}catch(e){status(e.message)}};
     uploadLabel.append(upload);box.append(uploadLabel);
     if(AmioModel.safeImage(photo.image)){const img=document.createElement('img');img.src=photo.image;img.alt=photo.alt||'Photo preview';img.className='editor-preview';box.append(img);}
     const buttons=document.createElement('div');buttons.className='actions';
-    action(buttons,'Move up',()=>move(list,index,-1,()=>drawPhotoList(root,list))).disabled=index===0;
-    action(buttons,'Move down',()=>move(list,index,1,()=>drawPhotoList(root,list))).disabled=index===list.length-1;
-    action(buttons,'Delete photo slot',()=>{if(confirm('Remove this photo slot?')){list.splice(index,1);persist();drawPhotoList(root,list);}});
+    action(buttons,'Move up',()=>{mark();move(list,index,-1,()=>drawPhotoList(root,list));}).disabled=index===0;
+    action(buttons,'Move down',()=>{mark();move(list,index,1,()=>drawPhotoList(root,list));}).disabled=index===list.length-1;
+    action(buttons,'Delete photo slot',()=>{if(confirm('Remove this photo slot?')){list.splice(index,1);mark();persist();drawPhotoList(root,list);}});
     box.append(buttons);root.append(box);
   });
 }
@@ -172,7 +179,7 @@ $('bulk-photos').onchange=async()=>{
   catch(e){status('Added '+added+' photos before stopping: '+e.message);}
   finally{input.disabled=false;input.value='';drawPhotos();}
 };
-$('add-post-photo').onclick=()=>{postPhotos.push(AmioModel.photo());drawPhotoList($('post-photo-fields'),postPhotos);};
+$('add-post-photo').onclick=()=>{postDirty=true;postPhotos.push(AmioModel.photo());drawPhotoList($('post-photo-fields'),postPhotos);};
 
 // Sections contain any number of entries. Their stable IDs become sidebar anchors.
 function addSection(title='New section') {
@@ -185,7 +192,7 @@ function drawSections() {
   const root=$('section-fields');root.replaceChildren();
   data.sections.forEach((section,index)=>{
     const box=document.createElement('details');box.className='item-editor';
-    const heading=document.createElement('summary');heading.textContent=section.title;box.append(heading);
+    const heading=document.createElement('summary');heading.textContent=section.title;box.append(heading);box.open=true;
     field(box,'Sidebar label / section title',section.title,v=>{section.title=v;heading.textContent=v;});
     field(box,'Introduction',section.description,v=>section.description=v,true);
     const visible=document.createElement('label');const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=section.published;checkbox.style.width='auto';
@@ -196,7 +203,7 @@ function drawSections() {
     action(controls,'Delete section',()=>{if(confirm('Delete this section and all its entries?')){data.sections.splice(index,1);persist();drawSections();}});
     box.append(controls);
     section.entries.forEach((entry,n)=>{
-      const item=document.createElement('details');item.className='item-editor';const summary=document.createElement('summary');summary.textContent=entry.title||'Untitled entry';item.append(summary);
+      const item=document.createElement('details');item.className='item-editor';const summary=document.createElement('summary');summary.textContent=entry.title||'Untitled entry';item.append(summary);item.open=true;
       field(item,'Title',entry.title,v=>{entry.title=v;summary.textContent=v;});
       const date=field(item,'Date (optional)',entry.date,v=>entry.date=v);date.type='date';
       field(item,'Description / citation / notes',entry.body,v=>entry.body=v,true);

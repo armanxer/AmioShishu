@@ -87,7 +87,15 @@ function sidebarLink(title,target){const a=make('a','',title);a.href='#'+target;
 (content.sections||[]).filter(s=>s.published).forEach(s=>{
   const section=make('section','section custom-section');section.id='custom-'+s.id;
   sidebarLink(s.title,section.id);
-  section.append(make('h2','',s.title),make('p','section-description',s.description));
+  const title=make('div','section-title');
+  const heading=make('div');heading.append(make('p','eyebrow','THE NOTEBOOK'),make('h2','',s.title));
+  title.append(heading,make('span','section-count',s.entries.length+' '+(s.entries.length===1?'entry':'entries')));
+  section.append(title,make('p','section-description',s.description));
+  if(!s.entries.length){
+    const empty=make('div','section-empty');
+    empty.append(make('h3','',s.title==='Art'?'A space for making.':s.title==='Seminars'?'Conversations worth sharing.':'Questions worth exploring.'),make('p','','This collection is being put together. New additions will appear here.'));
+    section.append(empty);
+  }
   s.entries.forEach(entry=>{
     const article=make('article','custom-entry');article.append(make('h3','',entry.title));
     if(entry.date)article.append(make('p','post-meta',dateLabel(entry.date)));
@@ -98,3 +106,18 @@ function sidebarLink(title,target){const a=make('a','',title);a.href='#'+target;
   document.querySelector('#custom-sections').append(section);
 });
 sidebarLink('Say hello','connect');
+
+// Highlight the section currently in view without changing focus or scroll position.
+if('IntersectionObserver' in window){
+  const links=Array.from(sidebar.querySelectorAll('a'));
+  const observer=new IntersectionObserver(entries=>{
+    for(const entry of entries){if(!entry.isIntersecting)continue;
+      links.forEach(link=>{
+        const active=link.getAttribute('href')==='#'+entry.target.id;
+        link.classList.toggle('is-active',active);
+        if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');
+      });
+    }
+  },{rootMargin:'-10% 0px -65% 0px',threshold:0});
+  links.forEach(link=>{const target=document.getElementById(link.hash.slice(1));if(target)observer.observe(target);});
+}
