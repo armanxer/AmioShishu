@@ -242,3 +242,17 @@ img { max-width: 100%; }
   .item-editor { padding: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .page-sidebar nav a { transition: none; } }
+
+/* Compact identity below the hero image; no separate full-width banner. */
+.hero-art .photo-identity {
+  display: grid;
+  gap: 2px;
+  margin-top: 14px;
+  padding: 12px 4px 0;
+  border-top: 1px solid #d4ddc5;
+  font: normal 10px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  color: var(--muted);
+}
+.hero-art .photo-identity > span { font: inherit; color: inherit; }
+.hero-art .photo-identity .identity-bangla { font-size: 15px; color: var(--green); }
+.hero-art .photo-identity .identity-name { font-size: 11px; font-weight: 600; color: var(--ink); }
