@@ -3,7 +3,7 @@
 A pistachio-and-sourdough portfolio with a quiet notebook design and separate, shareable pages.
 
 ## Site structure
-Home → Purpose & Service → Projects → Publications → Seminars → My Story → My Sourdough Recipes → Art → Journal → Photos → Contact.
+Home → Purpose & Inclusion → Projects → Publications → Seminars → My Story → My Sourdough Recipes → Art → Contact.
 
 The sidebar navigates between real pages, not sections of one long document. Projects replaces the former My Work section. Collections and posts remain editable through the browser editor.
 

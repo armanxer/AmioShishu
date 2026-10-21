@@ -44,6 +44,7 @@ function entryArticle(entry) {
   article.append(make('h2', '', entry.title));
   if (entry.date) article.append(make('p', 'post-meta', dateLabel(entry.date)));
   article.append(make('p', 'entry-body', entry.body));
+  if (entry.research) article.append(researchDetails(entry.research));
   if (AmioModel.safeLink(entry.url)) {
     const link = make('a', 'text-link', entry.linkLabel || 'Read more');
     link.href = entry.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; article.append(link);
@@ -96,3 +97,26 @@ if (page.kind === 'post') {
 const email = document.querySelector('#email');
 if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(content.email)) email.href = 'mailto:' + content.email;
 document.querySelector('#year').textContent = new Date().getFullYear();
+
+// Research case study: status, proposed data protocol, methods, and source links.
+// Keep proposals clearly labeled; do not turn plans into completed-result claims.
+function researchDetails(research) {
+  const root=make('div','research-details');
+  root.append(make('p','research-status',research.status),make('p','research-context',research.current));
+  root.append(make('h3','','Research question'),make('p','',research.question));
+  root.append(make('h3','','What the proposed research would record'),make('p','',research.dataIntro));
+  const wrap=make('div','research-table-wrap');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Proposed data collection table');
+  const table=make('table','research-table');table.append(make('caption','','Proposed fields — subject to record audit and consent'));
+  const head=make('thead');const headings=make('tr');
+  ['Data area','Fields and observations','How it would inform the app'].forEach(label=>{const th=make('th','',label);th.setAttribute('scope','col');headings.append(th);});
+  head.append(headings);table.append(head);
+  const body=make('tbody');
+  research.dataRows.forEach(row=>{const tr=make('tr');row.forEach(value=>tr.append(make('td','',value)));body.append(tr);});
+  table.append(body);wrap.append(table);root.append(wrap);
+  research.blocks.forEach(block=>{root.append(make('h3','',block.title),make('p','',block.text));});
+  root.append(make('h3','','Research and design references'));
+  const list=make('ul','research-sources');
+  research.sources.forEach(source=>{if(!AmioModel.safeLink(source.url))return;const li=make('li');const a=make('a','text-link',source.title);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';li.append(a,make('p','',source.note));list.append(li);});
+  root.append(list,make('p','post-meta','These sources inform the proposed design. They do not validate this project or imply endorsement.'));
+  return root;
+}

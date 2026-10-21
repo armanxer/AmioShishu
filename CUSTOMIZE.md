@@ -130,3 +130,13 @@ Open `http://localhost:8000/` in your browser. A local server is recommended bec
 - **Need to change static copy:** edit its `_pages/` fragment, not generated output.
 
 Code and generated links are checked during development. A visual browser review is still useful after your own changes, especially at phone widths.
+
+
+## Current structure: Purpose & Inclusion and adaptive-learning research
+Photos and Journal are no longer public pages or sidebar links. Their existing content is retained in content.js as an archive; the build does not publish those routes, including individual journal posts. The older editor controls still edit that archive, not a visible page.
+
+Purpose and Inclusive Education are combined at /purpose/. Edit _pages/purpose.html for the service narrative and Dipto Shimanto collaboration. No activity-photo placeholders remain on that page.
+
+The data-collection project is in the Projects collection. Its research object in content.js contains the status, current-stage statement, proposed data dictionary, method blocks, and references. Edit those advanced fields directly in content.js; the editor preserves them when you change an entry's basic title/body. Keep unverified data fields and app features labeled proposed until you actually implement or collect them. Older browser saves are migrated once to retain the new project and remove the retired education collection.
+
+The public website contains no child-level research dataset. The field descriptions are a proposed protocol, not a disclosure of participants' personal records.

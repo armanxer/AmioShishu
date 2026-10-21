@@ -45,6 +45,16 @@
       if(education&&!d.sections.some(s=>s.id===education.id))d.sections.push(JSON.parse(JSON.stringify(education)));
       d.schemaVersion=4;
     }
+    // Migrate old editor saves: merge the retired education page into Purpose,
+    // and carry the new project entry forward without overwriting existing projects.
+    if((d.schemaVersion||0)<5){
+      d.sections=d.sections.filter(s=>s.id!=='inclusive-education');
+      const publishedProjects=root.AMIO_CONTENT?.sections?.find(s=>s.id==='projects');
+      const research=publishedProjects?.entries?.find(e=>e.projectKey==='adaptive-learning-research');
+      const target=d.sections.find(s=>s.id==='projects');
+      if(research&&target&&!target.entries.some(e=>e.projectKey===research.projectKey))target.entries.unshift(JSON.parse(JSON.stringify(research)));
+      d.schemaVersion=5;
+    }
     const sectionIds=new Set();
     d.sections.forEach(s=>{
       strings(s,['id','title','description']);

@@ -1,4 +1,4 @@
-/* Editable content. Export from editor.html; deployment generates separate pages. */
+/* Editable content. Research plans are explicitly distinguished from completed work. */
 window.AMIO_CONTENT = {
   "email": "contact.anikarman@gmail.com",
   "gallery": [
@@ -60,9 +60,95 @@ window.AMIO_CONTENT = {
     {
       "id": "projects",
       "title": "Projects",
-      "description": "Experiments, tools, and ideas developed through learning and research.",
+      "description": "Research and development connecting technical methods with practical needs. Current work includes an adaptive learning app concept for parents and teachers with limited resources.",
       "published": true,
-      "entries": []
+      "entries": [
+        {
+          "projectKey": "adaptive-learning-research",
+          "title": "AmioShishu Adaptive Learning — Research in Progress",
+          "date": "",
+          "body": "A research project exploring how observations from children’s learning activities can become practical guidance for parents and teachers with limited time, materials, or access to specialist support. I have collected data from 50 children to inform parent-focused learning aids. The next goal is an adaptive app that helps an adult choose an activity, adjust its difficulty and format, and understand what to try next.",
+          "url": "",
+          "linkLabel": "",
+          "photos": [],
+          "research": {
+            "status": "Research in progress · App proposed",
+            "current": "Established work: data collected from 50 children. The detailed observation framework and app architecture below describe the proposed next phase; they are not a claim that every listed field has already been collected, that a model has been trained, or that the app has been validated.",
+            "question": "How can a small set of understandable learning observations help a parent or teacher select an accessible next activity, using the resources they already have?",
+            "dataIntro": "Proposed data dictionary and observation protocol. Before analysis, I plan to audit the existing records, document which fields are actually available, and identify what would require further consented collection.",
+            "dataRows": [
+              [
+                "Learning goal and starting point",
+                "Activity type, target skill, task difficulty, and what the learner can do independently before support.",
+                "Create an initial learner profile and avoid recommending tasks that are too easy, too difficult, or unrelated to the adult’s goal."
+              ],
+              [
+                "Task attempts and assistance",
+                "Completed or skipped steps, correct responses where applicable, retries, and the type of prompt used: demonstration, visual cue, verbal instruction, or guided practice.",
+                "Separate independent success from supported success; adjust scaffolding and recommend a smaller next step when needed."
+              ],
+              [
+                "Interaction and access preferences",
+                "How the child chooses to respond—speech, pointing, selecting images, or hands-on work—and which instructions or formats appear usable.",
+                "Offer alternative response modes and representations rather than interpreting one inaccessible format as a lack of ability."
+              ],
+              [
+                "Participation and session context",
+                "Optional task duration, breaks, child-requested stops, interruptions, and the adult’s contextual notes.",
+                "Suggest manageable activity lengths and breaks. Avoid treating time-on-task, speed, or a single difficult session as a diagnostic score."
+              ],
+              [
+                "Change across sessions",
+                "Repeated observations on comparable tasks, level of assistance, and whether a skill carries over to a different activity.",
+                "Build a longitudinal progress view and distinguish a one-off result from a recurring pattern."
+              ],
+              [
+                "Parent and teacher constraints",
+                "Preferred language, device and connectivity access, available materials, preparation time, and feedback on instructions.",
+                "Recommend feasible activities and formats, including printable alternatives and an offline-first workflow."
+              ]
+            ],
+            "blocks": [
+              {
+                "title": "From observations to adaptation",
+                "text": "The proposed workflow is: pseudonymous learner profile → structured session record → data validation and missing-value checks → rule-based recommendation → adult review → next-session feedback. A simple baseline would suggest a comparable task with less prompting after repeated independent success, offer smaller steps or a different format when support is still needed, and let the adult override or pause any suggestion. These rules would need testing with educators and families before use."
+              },
+              {
+                "title": "Proposed technical architecture",
+                "text": "An offline-first Progressive Web App (PWA) would provide a lightweight interface on shared or low-cost devices. IndexedDB could store activity packs and session records locally; service-worker caching could keep core resources usable without a continuous connection. A tagged activity library would describe each task’s target skill, difficulty, materials, response options, and language. An explainable recommendation engine would match those tags to a learner profile and adult-selected goals. An optional synchronization layer would be a later design decision, with access controls and retention rules defined before collecting data online."
+              },
+              {
+                "title": "Why begin with interpretable rules?",
+                "text": "Fifty children provide a starting point for exploratory research and requirements gathering, not evidence that a general-purpose prediction model will work. I plan to begin with descriptive analysis, within-learner trends, and transparent rules. If a later dataset justifies machine learning, candidate approaches such as knowledge tracing would be compared against that baseline, with learner-level evaluation splits to reduce data leakage. No accuracy score or model performance is claimed at this stage."
+              },
+              {
+                "title": "Designed for adults working with fewer resources",
+                "text": "The proposed app would pair each recommendation with a short explanation, a simple activity guide, and inexpensive material options. Design priorities include plain-language instructions, visual supports, adjustable pacing, Bangla-first content with English options, printable activities, and flexible ways for a child to respond. Parents and teachers would remain the decision-makers. The aim is to reduce preparation effort while preserving each child’s choices and support needs."
+              },
+              {
+                "title": "Evaluation planned",
+                "text": "The next research steps are to audit the existing dataset, refine the observation rubric with parent and educator feedback, create an initial activity library, and prototype the adult workflow. Evaluation would examine instruction clarity, preparation time, task accessibility, independent versus prompted completion, and perceived usefulness. Repeated sessions and an appropriate comparison design would be needed before claiming that the app improves learning. Findings would be reported with their limitations, including the small sample and differences between learners."
+              },
+              {
+                "title": "Data boundaries",
+                "text": "The proposed protocol calls for parent or guardian consent, age-appropriate child assent where possible, pseudonymous identifiers, limited access, and a defined deletion schedule. Identifiable child-level records would not be published on this website. The app is intended as an educational support tool, not a diagnostic or therapeutic system; automatic diagnosis, emotion recognition, and rankings of children are outside its proposed scope."
+              }
+            ],
+            "sources": [
+              {
+                "title": "CAST — Universal Design for Learning",
+                "url": "https://www.cast.org/what-we-do/universal-design-for-learning/",
+                "note": "Framework informing flexible engagement, representation, and ways to act or respond."
+              },
+              {
+                "title": "UNICEF Innocenti — Accessible Digital Textbooks",
+                "url": "https://www.unicef.org/innocenti/projects/accessible-digital-textbooks",
+                "note": "Accessibility and implementation-research context for digital learning materials."
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "id": "sourdough-recipes",
@@ -70,68 +156,7 @@ window.AMIO_CONTENT = {
       "description": "Recipes, kitchen notes, and experiments with flour, patience, and pistachios.",
       "published": true,
       "entries": []
-    },
-    {
-      "id": "inclusive-education",
-      "slug": "inclusive-education",
-      "title": "Inclusive Education",
-      "description": "AmioShishu is a nonprofit initiative advancing inclusive education and tailored support for autistic and underserved children. This work includes a collaboration with Dipto Shimanto.",
-      "published": true,
-      "entries": [
-        {
-          "title": "Listening before designing",
-          "date": "",
-          "body": "I collected data from 50 children to inform the design of parent-focused learning aids. The aim is to make learning support useful beyond a single session, with resources parents can use with their children.",
-          "url": "",
-          "linkLabel": "",
-          "photos": []
-        },
-        {
-          "title": "Coaching through problems",
-          "date": "",
-          "body": "I coached students in IT and mathematics problem-solving. This is where my own learning becomes something I can share: helping another student work through a question, rather than keeping the answer to myself.",
-          "url": "",
-          "linkLabel": "",
-          "photos": [
-            {
-              "image": "",
-              "caption": "Activity photo to be added.",
-              "alt": "",
-              "placeholder": "Learning together"
-            }
-          ]
-        },
-        {
-          "title": "Learning and play with Dipto Shimanto",
-          "date": "",
-          "body": "Through the collaboration with Dipto Shimanto, I supervised educational activities as part of the work to support autistic and underserved children.",
-          "url": "",
-          "linkLabel": "",
-          "photos": [
-            {
-              "image": "",
-              "caption": "Activity photo to be added.",
-              "alt": "",
-              "placeholder": "Educational activities"
-            },
-            {
-              "image": "",
-              "caption": "Activity photo to be added.",
-              "alt": "",
-              "placeholder": "Play and participation"
-            }
-          ]
-        },
-        {
-          "title": "Why this belongs at the centre",
-          "date": "",
-          "body": "AmioShishu means “I am also a child.” For me, that means seeing a learner before seeing a limitation. My research, competitions, and studies help me build skills that I can bring back to this work.",
-          "url": "",
-          "linkLabel": "",
-          "photos": []
-        }
-      ]
     }
   ],
-  "schemaVersion": 4
+  "schemaVersion": 5
 };

@@ -19,7 +19,7 @@ const escape = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;',
 const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'collection';
 const routes = new Set(['', 'purpose', 'my-story', 'photos', 'journal', 'contact', 'assets', 'editor']);
 const fixed = (route, title, fragment) => ({route, title, kind: 'static', fragment});
-const sections = (content.sections || []).filter(s => s.published);
+const sections = (content.sections || []).filter(s => s.published && s.id !== 'inclusive-education');
 const sectionPages = sections.map(s => {
   // Built-in routes stay stable; custom pages use readable slugs. Optional slug pins a URL.
   let route = ['projects','publications','seminars','sourdough-recipes','art'].includes(s.id) ? s.id : slug(s.slug || s.title);
@@ -29,28 +29,21 @@ const sectionPages = sections.map(s => {
   return {route: candidate, title: s.title, kind: 'section', id: s.id};
 });
 const take = id => sectionPages.find(p => p.id === id);
-const priority = ['inclusive-education', 'projects', 'publications', 'seminars'];
+const priority = ['projects', 'publications', 'seminars'];
 const extras = sectionPages.filter(p => ![...priority, 'sourdough-recipes', 'art'].includes(p.id));
 const pages = [
   fixed('', 'Home', 'home'),
-  fixed('purpose', 'Purpose & Service', 'purpose'),
+  fixed('purpose', 'Purpose & Inclusion', 'purpose'),
   ...priority.map(take),
   ...extras,
   fixed('my-story', 'My Story', 'my-story'),
   take('sourdough-recipes'), take('art'),
-  fixed('journal', 'Journal', 'journal'),
-  fixed('photos', 'Photos', 'photos'),
   fixed('contact', 'Contact', 'contact')
 ].filter(Boolean);
 const nav = pages.map(({route, title}) => ({route, title}));
-// Published journal entries also get shareable URLs. Drafts have no generated page.
+// Journal and Photos have been retired from the public website.
+// Preserve stored content for the owner; do not generate those pages.
 const postRoutes = {};
-for (const post of content.posts.filter(p => p.published)) {
-  let route = 'journal/' + slug(post.slug || post.title), n = 2;
-  while (routes.has(route)) route = 'journal/' + slug(post.slug || post.title) + '-' + n++;
-  routes.add(route); postRoutes[post.id] = route;
-  pages.push({route, title: post.title, kind: 'post', id: post.id});
-}
 const template = read('_pages/template.html');
 for (const page of pages) {
   const depth = page.route ? page.route.split('/').length : 0;
