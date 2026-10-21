@@ -70,7 +70,68 @@ window.AMIO_CONTENT = {
       "description": "Recipes, kitchen notes, and experiments with flour, patience, and pistachios.",
       "published": true,
       "entries": []
+    },
+    {
+      "id": "inclusive-education",
+      "slug": "inclusive-education",
+      "title": "Inclusive Education",
+      "description": "AmioShishu is a nonprofit initiative advancing inclusive education and tailored support for autistic and underserved children. This work includes a collaboration with Dipto Shimanto.",
+      "published": true,
+      "entries": [
+        {
+          "title": "Listening before designing",
+          "date": "",
+          "body": "I collected data from 50 children to inform the design of parent-focused learning aids. The aim is to make learning support useful beyond a single session, with resources parents can use with their children.",
+          "url": "",
+          "linkLabel": "",
+          "photos": []
+        },
+        {
+          "title": "Coaching through problems",
+          "date": "",
+          "body": "I coached students in IT and mathematics problem-solving. This is where my own learning becomes something I can share: helping another student work through a question, rather than keeping the answer to myself.",
+          "url": "",
+          "linkLabel": "",
+          "photos": [
+            {
+              "image": "",
+              "caption": "Activity photo to be added.",
+              "alt": "",
+              "placeholder": "Learning together"
+            }
+          ]
+        },
+        {
+          "title": "Learning and play with Dipto Shimanto",
+          "date": "",
+          "body": "Through the collaboration with Dipto Shimanto, I supervised educational activities as part of the work to support autistic and underserved children.",
+          "url": "",
+          "linkLabel": "",
+          "photos": [
+            {
+              "image": "",
+              "caption": "Activity photo to be added.",
+              "alt": "",
+              "placeholder": "Educational activities"
+            },
+            {
+              "image": "",
+              "caption": "Activity photo to be added.",
+              "alt": "",
+              "placeholder": "Play and participation"
+            }
+          ]
+        },
+        {
+          "title": "Why this belongs at the centre",
+          "date": "",
+          "body": "AmioShishu means “I am also a child.” For me, that means seeing a learner before seeing a limitation. My research, competitions, and studies help me build skills that I can bring back to this work.",
+          "url": "",
+          "linkLabel": "",
+          "photos": []
+        }
+      ]
     }
   ],
-  "schemaVersion": 3
+  "schemaVersion": 4
 };

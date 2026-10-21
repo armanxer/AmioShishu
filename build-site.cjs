@@ -29,7 +29,7 @@ const sectionPages = sections.map(s => {
   return {route: candidate, title: s.title, kind: 'section', id: s.id};
 });
 const take = id => sectionPages.find(p => p.id === id);
-const priority = ['projects', 'publications', 'seminars'];
+const priority = ['inclusive-education', 'projects', 'publications', 'seminars'];
 const extras = sectionPages.filter(p => ![...priority, 'sourdough-recipes', 'art'].includes(p.id));
 const pages = [
   fixed('', 'Home', 'home'),

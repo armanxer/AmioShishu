@@ -38,6 +38,13 @@
       ])if(!d.sections.some(existing=>existing.id===s.id))d.sections.push(s);
       d.schemaVersion=3;
     }
+    // Bring the newly published education page into older local editor backups once.
+    // Preserve any existing edits to that collection; do not revive deletions after v4.
+    if((d.schemaVersion||0)<4){
+      const education=root.AMIO_CONTENT?.sections?.find(s=>s.id==='inclusive-education');
+      if(education&&!d.sections.some(s=>s.id===education.id))d.sections.push(JSON.parse(JSON.stringify(education)));
+      d.schemaVersion=4;
+    }
     const sectionIds=new Set();
     d.sections.forEach(s=>{
       strings(s,['id','title','description']);
