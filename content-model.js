@@ -55,6 +55,21 @@
       if(research&&target&&!target.entries.some(e=>e.projectKey===research.projectKey))target.entries.unshift(JSON.parse(JSON.stringify(research)));
       d.schemaVersion=5;
     }
+    // Preserve the newly added bibliography when opening older local editor saves.
+    if((d.schemaVersion||0)<6){
+      const source=root.AMIO_CONTENT?.sections?.find(s=>s.id==='publications');
+      const target=d.sections.find(s=>s.id==='publications');
+      if(source&&target){
+        target.title=source.title;
+        target.description=source.description;
+        for(const entry of source.entries){
+          if(!target.entries.some(e=>(entry.publicationKey&&e.publicationKey===entry.publicationKey)||e.title===entry.title)){
+            target.entries.push(JSON.parse(JSON.stringify(entry)));
+          }
+        }
+      }
+      d.schemaVersion=6;
+    }
     const sectionIds=new Set();
     d.sections.forEach(s=>{
       strings(s,['id','title','description']);

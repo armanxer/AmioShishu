@@ -41,6 +41,7 @@ for (const item of page.nav) {
 }
 function entryArticle(entry) {
   const article = make('article', 'custom-entry');
+  if (entry.status) article.append(make('p', 'publication-status', entry.status));
   article.append(make('h2', '', entry.title));
   if (entry.date) article.append(make('p', 'post-meta', dateLabel(entry.date)));
   article.append(make('p', 'entry-body', entry.body));

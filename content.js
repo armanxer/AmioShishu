@@ -1,4 +1,4 @@
-/* Editable content. Research plans are explicitly distinguished from completed work. */
+/* Editable content. Publication statuses and author lists are supplied by the site owner. */
 window.AMIO_CONTENT = {
   "email": "contact.anikarman@gmail.com",
   "gallery": [
@@ -38,10 +38,61 @@ window.AMIO_CONTENT = {
   "sections": [
     {
       "id": "publications",
-      "title": "Publications",
-      "description": "Research papers, collaborations, and questions I am exploring.",
+      "title": "Research & Publications",
+      "description": "Published papers, work in press, and manuscripts under revision. Each entry lists its authors, venue, and current publication status.",
       "published": true,
-      "entries": []
+      "entries": [
+        {
+          "publicationKey": "traffic-congestion-2026",
+          "title": "Deterministic and Fractional-Order Analysis of Urban Traffic Congestion With Optimal Control",
+          "status": "Published · 2026",
+          "body": "Islam, Md Asraful, & Arman, Kazi Anik. (2026).\nJournal of Applied Mathematics, 2026, Article 9492529, 30 pages.",
+          "url": "https://doi.org/10.1155/jama/9492529",
+          "linkLabel": "Read publication ↗",
+          "date": "",
+          "photos": []
+        },
+        {
+          "publicationKey": "financial-inclusion-2026",
+          "title": "Artificial intelligence and financial inclusion for rural women in Bangladesh: Opportunities, barriers, and policy implications",
+          "status": "Published · 2026",
+          "body": "Islam, M. S., Dhar, A., Islam, T., Ahsan, M. N., Iqbal, M. J., Barua, S., Arman, K. A., & Shil, H. C. (2026).\nInternational Journal of Economic Dynamics and Finance, 2(3), 129–137.",
+          "url": "https://doi.org/10.5281/zenodo.20770179",
+          "linkLabel": "Read publication ↗",
+          "date": "",
+          "photos": []
+        },
+        {
+          "publicationKey": "ecosystem-in-press",
+          "title": "Modeling and stability of a three-prey–one-predator ecosystem: A deterministic and fractional-order approach",
+          "status": "In press",
+          "body": "Islam, M. A., & Ahmed, T. (in press).\nJournal of Bangladesh Academy of Sciences.",
+          "url": "",
+          "linkLabel": "",
+          "date": "",
+          "photos": []
+        },
+        {
+          "publicationKey": "bogdanov-minor-revision",
+          "title": "Deep learning modeling of fractional-order chaotic dynamics in the modified Bogdanov map for neural feedback and cryptographic applications",
+          "status": "Under minor revision",
+          "body": "Islam, M. A., Hassan, I. R., Arman, K. A., & Ahmed, P. (n.d.).\nManuscript under minor revision at the International Journal of Theoretical Physics.",
+          "url": "",
+          "linkLabel": "",
+          "date": "",
+          "photos": []
+        },
+        {
+          "publicationKey": "arizona-minor-revision",
+          "title": "Hybrid deep learning and meta-ensemble modeling for temperature forecasting and drought-related risk in Arizona, USA",
+          "status": "Under minor revision",
+          "body": "Nath, A. D., Islam, M. S., Singha, S., Yad, M. A. A., Ridoy, M. J. I., Mumu, T. A., Arman, K. A., & Anand, A. (n.d.).\nManuscript under minor revision at Discover Sustainability.",
+          "url": "",
+          "linkLabel": "",
+          "date": "",
+          "photos": []
+        }
+      ]
     },
     {
       "id": "seminars",
@@ -158,5 +209,5 @@ window.AMIO_CONTENT = {
       "entries": []
     }
   ],
-  "schemaVersion": 5
+  "schemaVersion": 6
 };
